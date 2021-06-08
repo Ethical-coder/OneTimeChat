@@ -39,4 +39,4 @@ server.get("/conv_end",(req,res)=>{
     database.database_query(query,res);
 })
 
-server.listen(9000)
+server.listen(9000,'0.0.0.0')
