@@ -1,32 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:one_time_chat/Provider/services_data.dart';
 import 'package:provider/provider.dart';
-import 'dart:convert' as convert;
+import "package:toast/toast.dart";
 
 class ContactScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Map data = ModalRoute.of(context)!.settings.arguments as Map;
     TextEditingController msg = TextEditingController();
-    var ref = Provider.of(context);
-    void sendFunction() async {
-      var url = Uri.http(ref.url, "/send_msg", {'q': '{http}'});
-      var response = await http.post(url, body: {
-        "sender": ref.number,
-        "receiver": data["num"].text,
-        "message": msg.text
-      });
-      var resBody = convert.jsonDecode(response.body);
-      if (resBody['status'] == 'success') {
-        print("success");
+    var _db = Provider.of<Services>(context);
+    Future<void> sendFunction() async {
+      if (msg.text.length != 0) {
+        await _db.send_msg(data["email"], msg.text);
+        msg.text = "";
+        Toast.show("Messege sent", context,
+            duration: Toast.LENGTH_LONG,
+            gravity: Toast.BOTTOM,
+            backgroundColor: Colors.blueGrey);
       } else {
-        print("failed");
+        Toast.show("Enter Message", context,
+            duration: Toast.LENGTH_LONG,
+            gravity: Toast.BOTTOM,
+            backgroundColor: Colors.blueGrey);
       }
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(data["name"]),
+        title: Text(data["email"]),
         backgroundColor: Colors.blueGrey.shade600,
       ),
       body: Container(
@@ -51,7 +52,7 @@ class ContactScreen extends StatelessWidget {
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.greenAccent, width: 1),
                   borderRadius: BorderRadius.circular(10),
-                  color: Colors.green.shade800),
+                  color: Colors.blueGrey),
             );
           },
         ),

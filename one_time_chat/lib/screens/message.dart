@@ -1,29 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
-import '../Provider/info_data_provider.dart';
-import 'dart:convert' as convert;
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:toast/toast.dart';
+//import 'package:http/http.dart' as http;
+//import '../Provider/info_data_provider.dart';
+//import 'dart:convert' as convert;
+import 'package:one_time_chat/Provider/services_data.dart';
 
 class Message extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    TextEditingController number = TextEditingController();
+    TextEditingController email = TextEditingController();
     TextEditingController message = TextEditingController();
-    var ref = Provider.of<Info>(context);
-
-    void sendMessage() async {
-      var url = Uri.http(ref.url, "/send_msg", {'q': '{http}'});
-      var response = await http.post(url, body: {
-        "sender": ref.number,
-        "receiver": number.text,
-        "message": message.text
-      });
-      var resBody = convert.jsonDecode(response.body);
-      if (resBody['status'] == "success") {
-        print("success");
+    //var ref = Provider.of<Info>(context);
+    var _db = Provider.of<Services>(context);
+    Future<void> sendMessage() async {
+      if (message.text.length == 0) {
+        Toast.show("No message to send", context,
+            duration: Toast.LENGTH_LONG,
+            gravity: Toast.BOTTOM,
+            backgroundColor: Colors.blueGrey);
+      } else if (email.text.length == 0) {
+        Toast.show("Enter the Email", context,
+            duration: Toast.LENGTH_LONG,
+            gravity: Toast.BOTTOM,
+            backgroundColor: Colors.blueGrey);
       } else {
-        print("failed");
+        await _db.send_msg(email.text, message.text);
+        email.text = "";
+        message.text = "";
+        Toast.show("Message Sent", context,
+            duration: Toast.LENGTH_LONG,
+            gravity: Toast.BOTTOM,
+            backgroundColor: Colors.blueGrey);
       }
+
+      print("sending mesage");
     }
 
     return Container(
@@ -54,9 +66,9 @@ class Message extends StatelessWidget {
                     border: Border.all(color: Colors.blueGrey.shade600),
                     borderRadius: BorderRadius.circular(10)),
                 child: TextField(
-                  controller: number,
+                  controller: email,
                   decoration: InputDecoration(
-                      hintText: "Enter Phone Number",
+                      hintText: "Enter Receiver Email",
                       hintStyle: TextStyle(color: Colors.blueGrey.shade600)),
                   style: TextStyle(color: Colors.white),
                 ),

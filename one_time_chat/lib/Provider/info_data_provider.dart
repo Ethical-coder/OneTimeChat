@@ -1,62 +1,39 @@
-import 'package:flutter/material.dart';
 import '../DataModels/messages.dart';
 
-class Info with ChangeNotifier {
-  String _userNum = "";
+class Info {
+  String _userEmail = "";
   String _userName = "";
-  String _mainUrl = "";
-  List<MessageModel> _data = [
-    MessageModel("abhi", "22356456", "my first message"),
-    MessageModel("sid", "22356566456", "my 2 message"),
-    MessageModel("abhi", "22356456", "my 3 message"),
-    MessageModel("abhi", "22356456", "my 4 message"),
-    MessageModel("abhi", "22356456", "my 5 message"),
-    MessageModel("abhi", "22356456", "my 3 message"),
-    MessageModel("abhi", "22356456", "my 4 message"),
-    MessageModel("abhi", "22356456", "my 5 message"),
-    MessageModel("abhi", "22356456", "my 3 message"),
-    MessageModel("abhi", "22356456", "my 4 message"),
-    MessageModel("abhi", "22356456", "my 5 message"),
-    MessageModel("abhi", "22356456", "my 3 message"),
-    MessageModel("abhi", "22356456", "my 4 message"),
-    MessageModel("abhi", "22356456", "my 5 message"),
-    MessageModel("abhi", "22356456", "my 3 message"),
-    MessageModel("abhi", "22356456", "my 4 message"),
-    MessageModel("abhi", "22356456",
-        "my 5 messagddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddRe"),
-    MessageModel("abhi", "22356456", "my 3 message"),
-    MessageModel("abhi", "22356456", "my 4 message"),
-    MessageModel("abhi", "22356456", "my 5 message"),
-    MessageModel("sid", "22356566456", "my 2 dfvmessage"),
-  ];
+  List<MessageModel> data = [];
   Map<String, Map<String, dynamic>> _processded_data = {};
-
-  String get url {
-    return _mainUrl;
+  void reset() {
+    this.data = [];
+    this._processded_data = {};
+    this._userEmail = "";
+    this._userName = "";
   }
 
-  String get number {
-    return _userNum;
+  String get email {
+    return _userEmail;
   }
 
   String get name {
     return _userName;
   }
 
-  void setUser(number) {
-    _userNum = number;
+  void setEmail(email) {
+    _userEmail = email;
   }
 
   List<MessageModel> get fetchData {
-    return [..._data];
+    return [...data];
   }
 
   void setData(value) {
-    this._data = value;
+    this.data = value;
   }
 
   void seperateMsg() {
-    var data = [..._data];
+    var data = [...this.data];
     Map<String, Map<String, dynamic>> newData = {};
     var i = 0;
 
@@ -65,7 +42,7 @@ class Info with ChangeNotifier {
       var keys = [...newData.keys];
       var j = 0;
       for (; j < keys.length; j++) {
-        if (data[i].senderNumber == keys[j]) {
+        if (data[i].senderEmail == keys[j]) {
           check = 1;
           break;
         }
@@ -73,16 +50,15 @@ class Info with ChangeNotifier {
 
       if (check == 0) {
         Map<String, Map<String, dynamic>> appData = {
-          data[i].senderNumber: {
+          data[i].senderEmail: {
             'count': 1,
             'msg': [data[i].message],
-            'name': data[i].senderName
           }
         };
         newData.addAll(appData);
       } else {
-        newData[data[i].senderNumber]!['count'] += 1;
-        newData[data[i].senderNumber]!['msg'].add(data[i].message);
+        newData[data[i].senderEmail]!['count'] += 1;
+        newData[data[i].senderEmail]!['msg'].add(data[i].message);
       }
     }
     _processded_data = newData;

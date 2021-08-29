@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:one_time_chat/Provider/info_data_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
+import 'package:one_time_chat/Provider/services_data.dart';
+//import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
+import 'package:toast/toast.dart';
 
 class SignupWidget extends StatelessWidget {
   void navigateToLogin(ctx) {
@@ -11,23 +13,25 @@ class SignupWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController number = TextEditingController();
+    final _auth = Provider.of<Services>(context);
+    TextEditingController email = TextEditingController();
     TextEditingController password = TextEditingController();
     TextEditingController name = TextEditingController();
     var ref = Provider.of<Info>(context);
 
-    void signupClicked() async {
-      var url = Uri.http(ref.url, "/signup", {'q': '{http}'});
-      var response = await http.post(url, body: {
-        "phone_number": number.text,
-        "password": password.text,
-        "name": name.text
-      });
-      var resBody = convert.jsonDecode(response.body);
-      if (resBody['status'] == 'success') {
-        Navigator.pop(context);
+    Future<void> signupClicked(ctx) async {
+      var x = await _auth.signup(email.text, password.text);
+      if (x == 1) {
+        Toast.show("User Created", context,
+            duration: Toast.LENGTH_LONG,
+            gravity: Toast.BOTTOM,
+            backgroundColor: Colors.blueGrey);
+        Navigator.pop(ctx);
       } else {
-        print('unsuccessful signup');
+        Toast.show("Invalid Credentials", context,
+            duration: Toast.LENGTH_LONG,
+            gravity: Toast.BOTTOM,
+            backgroundColor: Colors.blueGrey);
       }
     }
 
@@ -61,9 +65,9 @@ class SignupWidget extends StatelessWidget {
                   border: Border.all(color: Colors.white),
                   borderRadius: BorderRadius.circular(25)),
               child: TextField(
-                controller: number,
+                controller: email,
                 decoration: InputDecoration(
-                    hintText: "Enter Your Phone Number",
+                    hintText: "Enter Your Email Address",
                     hoverColor: Colors.white),
                 style: TextStyle(color: Colors.white),
               ),
@@ -111,7 +115,7 @@ class SignupWidget extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                           color: Colors.greenAccent),
                       child: InkWell(
-                        onTap: () => signupClicked(),
+                        onTap: () => signupClicked(context),
                         child: Text(
                           "Sign in",
                           style: TextStyle(fontSize: 20),

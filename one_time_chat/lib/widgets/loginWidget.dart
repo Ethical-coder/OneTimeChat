@@ -1,47 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+//import 'package:http/http.dart' as http;
 import 'package:one_time_chat/DataModels/messages.dart';
+import 'package:one_time_chat/Provider/services_data.dart';
 import 'package:provider/provider.dart';
 import '../Provider/info_data_provider.dart';
 import 'dart:convert' as convert;
+import "package:toast/toast.dart";
 
 class LoginWidget extends StatelessWidget {
+  //var _auth = Auth();
+  Future<void> process(ref, ser) async {
+    await ser.fetch_data();
+    await ref.setData(ser.get_data());
+    await ref.seperateMsg();
+  }
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController number = TextEditingController();
+    TextEditingController email = TextEditingController();
     TextEditingController password = TextEditingController();
     var ref = Provider.of<Info>(context);
+    var _auth = Provider.of<Services>(context);
 
+    //function used for logging into the account
     void loginClicked() async {
-      var url = Uri.http(ref.url, "/login", {'q': '{http}'});
-      var response = await http.post(url,
-          body: {"phone_number": number.text, "password": password.text});
-      var resBody = convert.jsonDecode(response.body);
-      if (resBody['status'] == 'success') {
-        ref.setUser(number.text);
+      //int q = await _auth.login(email.text, password.text);
+      int q = await _auth.login(email.text, password.text);
+      print("result");
+      print(q);
+      if (q == 1) {
+        ref.reset();
+        _auth.reset();
+        await process(ref, _auth);
+
         Navigator.pushNamed(context, "/mainPage");
+        await _auth.delete();
+        Toast.show("logged in", context,
+            duration: Toast.LENGTH_LONG,
+            gravity: Toast.BOTTOM,
+            backgroundColor: Colors.blueGrey);
       } else {
-        print("Unsuccessful login");
-      }
-
-      var geturl = Uri.http(
-          ref.url, "/get_msg?receiver=" + number.text, {'q': '{http}'});
-      var getresp = await http.get(geturl);
-      var data = convert.jsonDecode(getresp.body);
-      if (data['status' == "success"]) {
-        List<MessageModel> model = [];
-        for (var i = 0; i < data['msg'].length; i++) {
-          MessageModel obj = MessageModel(data['msg'][i]['name'],
-              data['msg'][i]['sender'], data['msg'][i]['message']);
-          model.add(obj);
-        }
-        ref.setData(model);
-        ref.seperateMsg();
-
-        var delurl = Uri.http(ref.url, "/conv_end?receiver=" + ref.number);
-        var _ = await http.get(delurl);
-      } else {
-        print("failed");
+        Toast.show("Invalid user", context,
+            duration: Toast.LENGTH_LONG,
+            gravity: Toast.BOTTOM,
+            backgroundColor: Colors.blueGrey);
       }
     }
 
@@ -75,9 +77,9 @@ class LoginWidget extends StatelessWidget {
                   border: Border.all(color: Colors.white),
                   borderRadius: BorderRadius.circular(25)),
               child: TextField(
-                controller: number,
+                controller: email,
                 decoration: InputDecoration(
-                    hintText: "Enter Your Phone Number",
+                    hintText: "Enter Your Email Address",
                     hoverColor: Colors.white),
                 style: TextStyle(color: Colors.white),
               ),

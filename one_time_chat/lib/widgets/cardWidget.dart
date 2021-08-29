@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 
 class CardWidget extends StatelessWidget {
-  String name;
-  String phone;
+  String email;
   String count;
   List msg;
-  CardWidget(this.name, this.phone, this.count, this.msg);
+  CardWidget(this.email, this.count, this.msg);
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => Navigator.pushNamed(context, "/contact",
-          arguments: {"name": this.name, "num": this.phone, 'msg': this.msg}),
+          arguments: {"email": this.email, 'msg': this.msg}),
       child: Container(
         width: double.infinity,
         margin: EdgeInsets.all(15),
@@ -33,12 +32,12 @@ class CardWidget extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    this.name,
+                    this.email,
                     textAlign: TextAlign.left,
                     style: TextStyle(fontSize: 20, color: Colors.greenAccent),
                   ),
                   Text(
-                    this.phone,
+                    "Sender",
                     style: TextStyle(fontSize: 20, color: Colors.greenAccent),
                   ),
                 ],
