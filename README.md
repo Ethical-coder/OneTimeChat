@@ -1,7 +1,7 @@
 
 # OTC
 
-One Time Chat is a secret chatting app.
+One Time Chat is a secret messaging app.
 
 ## Features
 
