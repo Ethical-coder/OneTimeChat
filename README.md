@@ -5,7 +5,8 @@ One Time Chat is a secret messaging app.
 
 ## Features
 
-- Chats gets deleted as soon as receiver opens account.
+- Chats will be visible to the user till he/she is logged in.
+- After logout all chats related to that user will be deleted.
 - Login using email.
 - Maintain secrecy of your chats.
 - No trace of previous data.
@@ -16,7 +17,6 @@ One Time Chat is a secret messaging app.
 
 ![Login Screenshot](https://github.com/Ethical-coder/OneTimeChat/blob/main/demo/Screenshot%20(342).png)
 ![Message Screenshot](https://github.com/Ethical-coder/OneTimeChat/blob/main/demo/Screenshot%20(345)_LI.jpg)
-![Chats Screenshot](https://github.com/Ethical-coder/OneTimeChat/blob/main/demo/Screenshot%20(350).png)
 ![App Info Screenshot](https://github.com/Ethical-coder/OneTimeChat/blob/main/demo/Screenshot%20(347).png)
 ![Contacts Screenshot](https://github.com/Ethical-coder/OneTimeChat/blob/main/demo/Screenshot%20(348).png)
 ## Installation
