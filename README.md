@@ -14,11 +14,15 @@ One Time Chat is a secret messaging app.
 
   
 ## Screenshots
+<details><summary>Screeshots</summary>
+  <img src="https://github.com/Ethical-coder/OneTimeChat/blob/main/demo/Screenshot%20(342).png" width="150" height="400"> 
+  <img src="https://github.com/Ethical-coder/OneTimeChat/blob/main/demo/Screenshot%20(345)_LI.jpg" width="200" height="400"> 
+  <img src="https://github.com/Ethical-coder/OneTimeChat/blob/main/demo/Screenshot%20(347).png" width="200" height="400"> 
+  <img src="https://github.com/Ethical-coder/OneTimeChat/blob/main/demo/Screenshot%20(348).png" width="200" height="400"> 
 
-![Login Screenshot](https://github.com/Ethical-coder/OneTimeChat/blob/main/demo/Screenshot%20(342).png)
-![Message Screenshot](https://github.com/Ethical-coder/OneTimeChat/blob/main/demo/Screenshot%20(345)_LI.jpg)
-![App Info Screenshot](https://github.com/Ethical-coder/OneTimeChat/blob/main/demo/Screenshot%20(347).png)
-![Contacts Screenshot](https://github.com/Ethical-coder/OneTimeChat/blob/main/demo/Screenshot%20(348).png)
+
+</details>
+
 ## Installation
 
 Installation is pretty simple just click on the link below and it will download apk file for you.
